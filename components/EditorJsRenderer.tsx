@@ -1,13 +1,7 @@
 import { BlockToolData, OutputBlockData, OutputData } from "@editorjs/editorjs";
 import React from "react";
 import CodeRenderer from "./CodeRenderer";
-const editorJsHtml = require("editorjs-html");
-const EditorJsToHtml = editorJsHtml({
-  code: (block: OutputBlockData<string>) => {
-    console.log(block);
-    return <CodeRenderer code={block.data.code} />;
-  },
-});
+import Blocks from "editorjs-blocks-react-renderer";
 
 type Props = {
   data: OutputData;
@@ -15,17 +9,16 @@ type Props = {
 type ParsedContent = string | JSX.Element;
 
 const EditorJsRenderer = ({ data }: Props) => {
-  const html = EditorJsToHtml.parse(data) as ParsedContent[];
+  // time が未定義の場合はデフォルト値として現在のタイムスタンプを使用
+  const safeData = {
+    ...data,
+    time: data.time || Date.now(),
+    version: data.version || "",
+  };
+
   return (
     <div className="prose max-w-full ">
-      {html.map((item, index) => {
-        if (typeof item === "string") {
-          return (
-            <div dangerouslySetInnerHTML={{ __html: item }} key={index}></div>
-          );
-        }
-        return item;
-      })}
+      <Blocks data={safeData} />
     </div>
   );
 };

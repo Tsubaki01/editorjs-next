@@ -1,6 +1,10 @@
 import React, { memo, useEffect, useRef } from "react";
 import EditorJS, { OutputData } from "@editorjs/editorjs";
 import { EDITOR_TOOLS } from "./EditorTools";
+// @ts-ignore
+import DragDrop from "editorjs-drag-drop";
+// @ts-ignore
+import Undo from "editorjs-undo";
 
 //props
 type Props = {
@@ -26,6 +30,9 @@ const Editor = ({ data, onChange, holder }: Props) => {
           onChange(data);
         },
         hideToolbar: false,
+        onReady: () => {
+          new DragDrop(editor);
+        },
       });
       ref.current = editor;
     }

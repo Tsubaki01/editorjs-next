@@ -2,7 +2,7 @@
 import { OutputData } from "@editorjs/editorjs";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import EditorJsRenderer from "../components/EditorJsRenderer";
 
 // important that we use dynamic loading here
@@ -14,14 +14,19 @@ const EditorBlock = dynamic(() => import("../components/Editor"), {
 const Home: NextPage = () => {
   //state to hold output data. we'll use this for rendering later
   const [data, setData] = useState<OutputData>();
+
+  const handleChange = useCallback((value: OutputData) => {
+    console.log(value);
+    setData(value);
+  }, []);
   return (
     <div className="grid grid-cols-2 gap-2">
-      <div className="col-span-1 ">
+      <div className="col-span-1">
         <h1>Editor</h1>
         <div className="border rounded-md">
           <EditorBlock
             data={data}
-            onChange={setData}
+            onChange={handleChange}
             holder="editorjs-container"
           />
         </div>
