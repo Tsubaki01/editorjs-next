@@ -5,6 +5,7 @@ import { EDITOR_TOOLS } from "./EditorTools";
 import DragDrop from "editorjs-drag-drop";
 // @ts-ignore
 import Undo from "editorjs-undo";
+import { EDITOR_I18N } from "./EditorI18n";
 
 //props
 type Props = {
@@ -24,6 +25,7 @@ const Editor = ({ data, onChange, holder }: Props) => {
       const editor = new EditorJS({
         holder: holder,
         tools: EDITOR_TOOLS,
+        i18n: EDITOR_I18N,
         data,
         async onChange(api, event) {
           const data = await api.saver.save();
